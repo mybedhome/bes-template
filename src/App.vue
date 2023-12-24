@@ -1,7 +1,9 @@
 <template>
-  <router-view v-slot="{ Component }">
-    <component :is="Component" :key="$route.path" />
-  </router-view>
+  <el-config-provider>
+    <router-view v-slot="{ Component }">
+      <component :is="Component" :key="$route.path" />
+    </router-view>
+  </el-config-provider>
 </template>
 
 <script lang="ts">

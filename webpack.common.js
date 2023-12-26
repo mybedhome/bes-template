@@ -22,13 +22,16 @@ module.exports = {
     rules: [
       {
         test: /\.vue$/,
+        include: path.resolve(__dirname, 'src'),
         loader: 'vue-loader'
       },
       {
         test: /\.ts$/,
+        include: path.resolve(__dirname, 'src'),
         loader: 'ts-loader',
         options: {
-          appendTsSuffixTo: [/\.vue$/]
+          appendTsSuffixTo: [/\.vue$/],
+          transpileOnly: true
         }
       },
       {
@@ -38,6 +41,10 @@ module.exports = {
       {
         test: /\.scss$/,
         use: ['vue-style-loader', 'css-loader', 'sass-loader']
+      },
+      {
+        test: /\.less$/,
+        use: ['vue-style-loader', 'css-loader', 'less-loader']
       },
       {
         test: /\.(png|svg|jpg|jpeg|gif)$/i,

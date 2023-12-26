@@ -10,9 +10,9 @@
 
 <script setup></script>
 
-<style lang="scss" scoped>
-$color: orange;
+<style lang="less" scoped>
+@color: orange;
 .title {
-  color: $color;
+  color: @color;
 }
 </style>

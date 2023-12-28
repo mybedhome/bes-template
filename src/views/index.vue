@@ -5,10 +5,15 @@
     <bes-container />
     <Test></Test>
     <img src="../assets/logo.png" />
+    <div>{{ names.join() }}</div>
   </div>
 </template>
 
-<script setup></script>
+<script setup>
+import { ref } from 'vue'
+const arr = ref(['rose', 'lucy'])
+const names = ref(Array.from(arr.value, (item) => item + '-yes'))
+</script>
 
 <style lang="less" scoped>
 @color: orange;

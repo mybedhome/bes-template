@@ -10,6 +10,13 @@
     "lint": "eslint --ext .ts,.vue --ignore-path .gitignore .",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
+  "browserslist": [
+    ">0.25%",
+    "Chrome >= 76",
+    "Firefox >= 68",
+    "not ie 11",
+    "not op_mini all"
+  ],
   "repository": {
     "type": "git",
     "url": "git+https://github.com/mybedhome/bes-template.git"

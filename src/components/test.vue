@@ -1,9 +1,18 @@
 <script setup>
 import { ref } from 'vue'
+import '@/assets/styles/test.css'
 const name = ref('test')
 </script>
 
 <template>
-  <h1>{{ name }}</h1>
+  <h1 class="test-title">{{ name }}</h1>
   <el-button type="primary">按钮</el-button>
 </template>
+
+<style lang="scss" scoped>
+.test-title {
+  color: pink;
+  font-size: 24px;
+  transform: translateX(100px);
+}
+</style>

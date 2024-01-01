@@ -102,6 +102,11 @@ module.exports = function (env, argv) {
       new webpack.optimize.LimitChunkCountPlugin({
         maxChunks: 5
       }),
+      new webpack.DefinePlugin({
+        __VUE_OPTIONS_API__: true,
+        __VUE_PROD_DEVTOOLS__: false,
+        'process.env': JSON.stringify({ isTest: true, helo: 'nihao' })
+      }),
       new VueLoaderPlugin(),
       new MiniCssExtractPlugin({
         filename: '[name].[contenthash].css',

@@ -13,6 +13,8 @@
 import { ref } from 'vue'
 const arr = ref(['rose', 'lucy'])
 const names = ref(Array.from(arr.value, (item) => item + '-yes'))
+// @ts-ignore
+console.log('isTest', window.isTest)
 </script>
 
 <style lang="less" scoped>

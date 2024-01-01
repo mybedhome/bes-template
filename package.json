@@ -7,6 +7,7 @@
   "scripts": {
     "start": "webpack serve --config webpack.config.js --open --progress",
     "build": "webpack --config webpack.config.js --mode production --progress",
+    "build:dev": "webpack --config webpack.config.js --mode development --progress",
     "lint": "eslint --ext .ts,.vue --ignore-path .gitignore ."
   },
   "browserslist": [

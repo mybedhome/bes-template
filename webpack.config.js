@@ -62,13 +62,10 @@ module.exports = function (env, argv) {
           loader: 'vue-loader'
         },
         {
-          test: /\.ts$/,
+          test: /\.(t|j)sx?$/,
+          exclude: /node_modules/,
           include: path.resolve(__dirname, 'src'),
-          loader: 'ts-loader',
-          options: {
-            appendTsSuffixTo: [/\.vue$/],
-            transpileOnly: true
-          }
+          loader: 'babel-loader'
         },
         {
           test: /\.s?css$/,

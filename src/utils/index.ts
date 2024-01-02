@@ -102,16 +102,19 @@ const px2vw = (
 }
 
 // 将formData转换为json
-const formDataToJson = (fd: FormData) => {
-  if (!(fd instanceof FormData)) return fd
-  return Array.from(new Set(Array.from(fd.keys()))).reduce(
-    (acc: { [propName: string]: any }, key) => {
-      const values = fd.getAll(key)
-      acc[key] = values.length > 1 ? values : values[0]
-      return acc
-    },
-    {}
-  )
+const formDataToJson = (formData: FormData): any => {
+  let object: any = {}
+  formData.forEach((value, key) => {
+    if (object.hasOwnProperty(key)) {
+      if (!Array.isArray(object[key])) {
+        object[key] = [object[key]]
+      }
+      object[key].push(value)
+    } else {
+      object[key] = value
+    }
+  })
+  return object
 }
 
 // 将json转换为FormData
@@ -150,7 +153,7 @@ const platform = () => {
     isPc,
     isAndroid,
     isPhone,
-    isTablet,
+    isTablet
   }
 }
 
@@ -189,5 +192,5 @@ export const utils = {
   guid,
   px2vw,
   find,
-  platform,
+  platform
 }

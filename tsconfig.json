@@ -1,12 +1,13 @@
 {
   "compilerOptions": {
     "baseUrl": ".",
-    "target": "esnext",
-    "module": "esnext",
+    "target": "ES6",
+    "module": "umd",
     "strict": true,
     "moduleResolution": "node",
     "allowSyntheticDefaultImports": true,
     "esModuleInterop": true,
+    "isolatedModules": true,
     "allowJs": true,
     "checkJs": true,
     "paths": {

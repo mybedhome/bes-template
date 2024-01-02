@@ -6,7 +6,7 @@
   </el-config-provider>
 </template>
 
-<script lang="ts">
+<script>
 import { defineComponent } from 'vue'
 import '@/assets/styles/common.css'
 export default defineComponent({

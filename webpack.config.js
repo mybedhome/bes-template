@@ -2,6 +2,7 @@ const path = require('path')
 const webpack = require('webpack')
 const { VueLoaderPlugin } = require('vue-loader')
 const HtmlWebpackPlugin = require('html-webpack-plugin')
+const TerserPlugin = require('terser-webpack-plugin')
 const MiniCssExtractPlugin = require('mini-css-extract-plugin')
 const CssMinimizerPlugin = require('css-minimizer-webpack-plugin')
 
@@ -23,8 +24,7 @@ const prodOptions = {
   mode: 'production',
   devtool: 'nosources-source-map',
   optimization: {
-    minimize: true,
-    // minimizer: [new CssMinimizerPlugin()],
+    minimizer: [new CssMinimizerPlugin(), new TerserPlugin()],
     moduleIds: 'deterministic',
     runtimeChunk: 'single',
     splitChunks: {
@@ -104,11 +104,11 @@ module.exports = function (env, argv) {
         __VUE_PROD_DEVTOOLS__: false,
         'process.env': JSON.stringify({ isTest: true, helo: 'nihao' })
       }),
-      new VueLoaderPlugin(),
       new MiniCssExtractPlugin({
         filename: '[name].[contenthash].css',
         chunkFilename: '[id].[contenthash].css'
       }),
+      new VueLoaderPlugin(),
       new HtmlWebpackPlugin({
         template: 'public/index.html'
       }),

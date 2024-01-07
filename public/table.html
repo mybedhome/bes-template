@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Table with Resizable Columns and Header Borders Only</title>
+<style>
+  .resizable-table {
+    display: table;
+    width: 100%;
+    margin: 0 auto;
+    border-collapse: collapse;
+    table-layout: fixed; /* This helps to prevent the table from expanding beyond its container */
+  }
+  .resizable-table th, .resizable-table td {
+    padding: 8px;
+    text-align: left;
+    position: relative;
+    overflow: hidden; /* Prevents content from spilling out */
+  }
+  .resizable-table th {
+    background: #f0f0f0;
+    cursor: ew-resize;
+  }
+  .resizable-table th:not(:last-child) {
+    border-right: 2px solid #ddd; /* Only right border for th, except the last one */
+  }
+  .resizer {
+    position: absolute;
+    right: 0;
+    top: 0;
+    width: 5px;
+    cursor: col-resize;
+    height: 100%;
+    user-select: none;
+  }
+  .resizable-table tbody td {
+    border: none; /* No borders for tbody's td */
+  }
+  .resizable-table tbody tr:not(:last-child) td {
+    border-bottom: none; /* Remove bottom border from tbody's td except the last row */
+  }
+</style>
+</head>
+<body>
+
+<table class="resizable-table">
+  <thead>
+    <tr>
+      <th class="th">选择<div class="resizer"></div></th>
+      <th class="th">文件名<div class="resizer"></div></th>
+      <th class="th">状态<div class="resizer"></div></th>
+      <th class="th">位置</th> <!-- Removed resizer from the last th -->
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td class="td"><input type="checkbox" checked></td>
+      <td class="td">Test-hy-001</td>
+      <td class="td"><span style="color: green;">●</span> 已启动</td>
+      <td class="td">桌面PC</td>
+    </tr>
+    <tr>
+      <td class="td"><input type="checkbox"></td>
+      <td class="td">Test-hy-002</td>
+      <td class="td"><span style="color: red;">●</span> 已停止</td>
+      <td class="td">笔记本</td>
+    </tr>
+    <!-- More rows can be added here -->
+  </tbody>
+</table>
+
+<script>
+const resizers = document.querySelectorAll('.resizer');
+let currentResizer;
+
+for (let resizer of resizers) {
+  resizer.addEventListener('mousedown', mousedown);
+
+  function mousedown(e) {
+    currentResizer = e.target;
+    let startX = e.clientX;
+    let startWidth = currentResizer.parentNode.offsetWidth;
+
+    document.addEventListener('mousemove', mousemove);
+    document.addEventListener('mouseup', mouseup);
+
+    function mousemove(e) {
+      const newWidth = startWidth + (e.clientX - startX);
+      requestAnimationFrame(() => {
+        currentResizer.parentNode.style.width = `${newWidth}px`;
+      });
+    }
+
+    function mouseup() {
+      document.removeEventListener('mousemove', mousemove);
+      document.removeEventListener('mouseup', mouseup);
+    }
+  }
+}
+</script>
+
+</body>
+</html>

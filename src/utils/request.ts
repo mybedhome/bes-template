@@ -3,21 +3,21 @@ import axios, {
   type RawAxiosRequestHeaders,
   type AxiosResponse,
   type AxiosError,
-  AxiosHeaders,
+  AxiosHeaders
 } from 'axios'
 import { utils } from '@/utils'
-import { useRequestStore } from '@/stores/request'
+
 import { HttpStatusCode, HttpStatusText } from '@/types/HttpStatusMap'
 import type { TokenInfo } from '@/types/common'
-
+import requestStore from './requestStore'
 export type ApiErrorResult = {
   message: string
   name: string
-  data: any
+  data: unknown
   url: string
 }
 
-export type ApiSuccessResult<T = any> = {
+export type ApiSuccessResult<T = unknown> = {
   statusCode: number
   success: boolean
   data: T
@@ -30,15 +30,14 @@ type CustomAxiosHeaders = RawAxiosRequestHeaders & {
 }
 
 const removeRequestStore = (config: AxiosRequestConfig) => {
-  const { removeRequest } = useRequestStore()
   // 请求完成从store里移除
-  removeRequest(config)
+  requestStore.removeRequest(config)
 }
 
 const request = axios.create({
   baseURL: window.g.VUE_APP_BASE_API,
   withCredentials: true,
-  timeout: 60 * 1000,
+  timeout: 60 * 1000
 })
 
 /** 错误处理 */
@@ -50,7 +49,7 @@ const handleError = (
       message: utils.find(error, 'config', 'signal', 'reason'),
       name: error.name,
       data: null,
-      url: error.config.url,
+      url: error.config.url
     })
   }
   if (error.response) {
@@ -61,18 +60,22 @@ const handleError = (
       message: data?.message || HttpStatusText[code],
       data,
       url: error.config.url as string,
-      response: error.response,
+      response: error.response
     }
 
     if (status === HttpStatusCode.UNAUTHORIZED) {
       localStorage.clear()
       sessionStorage.clear()
-      window.location.href = data?.data?.url
+      window.location.href = (data?.data as { url: string }).url
     } else if (status === HttpStatusCode.FORBIDDEN) {
       // 5秒后重定向到统一认证
       utils
         .delay(5000)
-        .then(() => (window.location.href = data?.url || data?.data?.url))
+        .then(
+          () =>
+            (window.location.href =
+              data?.url || (data?.data as { url: string }).url)
+        )
     }
     removeRequestStore(config)
     return Promise.reject(errorResult)
@@ -85,13 +88,11 @@ request.interceptors.request.use((config) => {
     localStorage.getItem('tokenInfo')
   )
   if (config.headers && tokenInfo) {
-    ;(
-      config.headers as CustomAxiosHeaders
-    ).Authorization = `${tokenInfo.token_type} ${tokenInfo.access_token}`
+    ;(config.headers as CustomAxiosHeaders).Authorization =
+      `${tokenInfo.token_type} ${tokenInfo.access_token}`
   }
   try {
-    const { addRequest } = useRequestStore()
-    addRequest(config)
+    requestStore.addRequest(config)
   } catch (error) {
     console.error('request error: ', error)
   }
@@ -122,25 +123,34 @@ class Http {
     try {
       const response = await request
       return {
-        data: response.data.data,
+        data: response.data.data || (response.data as T),
         error: null,
         requestHeaders: response.config.headers as AxiosHeaders,
-        responseHeaders: response.headers as AxiosHeaders,
+        responseHeaders: response.headers as AxiosHeaders
       }
     } catch (error) {
       const { response, ...errorData } = error as {
         response: AxiosResponse
       } & ApiErrorResult
+      if (errorData.name === 'CanceledError') {
+        return {
+          data: null,
+          error: errorData,
+          requestHeaders: {},
+          responseHeaders: {}
+        } as WrapperApiResult<T>
+      }
+
       return {
         data: undefined,
         error: errorData,
         requestHeaders: response.config.headers as AxiosHeaders,
-        responseHeaders: response.headers as AxiosHeaders,
-      } as WrapperApiResult<any>
+        responseHeaders: response.headers as AxiosHeaders
+      } as WrapperApiResult<T>
     }
   }
 
-  async get<T>(
+  get<T>(
     url: string,
     config?: AxiosRequestConfig
   ): Promise<WrapperApiResult<T>> {

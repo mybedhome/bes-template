@@ -17,7 +17,7 @@ const devOptions = {
   mode: 'development',
   devtool: 'eval-cheap-module-source-map',
   devServer: {
-    static: './dist'
+    static: './public'
   }
 }
 const prodOptions = {
@@ -102,7 +102,12 @@ module.exports = function (env, argv) {
       new webpack.DefinePlugin({
         __VUE_OPTIONS_API__: true,
         __VUE_PROD_DEVTOOLS__: false,
-        'process.env': JSON.stringify({ isTest: true, helo: 'nihao' })
+        'process.env': JSON.stringify({
+          isTest: true,
+          helo: 'nihao',
+          num: 10,
+          arr: [111]
+        })
       }),
       new MiniCssExtractPlugin({
         filename: '[name].[contenthash].css',

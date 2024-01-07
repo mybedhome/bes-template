@@ -11,7 +11,7 @@ export default (app: App<Element>): void => {
     let fileName = path
     // components子目录下的index.vue组件名取父级目录名称
     if (path.endsWith('/index.vue')) {
-      const matchs = path.match(/[^\.\/]+(?=\/index\.vue)/)
+      const matchs = path.match(/[^./]+(?=\/index\.vue)/)
       if (matchs) fileName = matchs[0]
     }
 

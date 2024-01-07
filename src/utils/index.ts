@@ -102,14 +102,15 @@ const px2vw = (
 }
 
 // 将formData转换为json
-const formDataToJson = (formData: FormData): any => {
-  let object: any = {}
+const formDataToJson = (formData: FormData) => {
+  if (!isFormData(formData)) return {}
+  const object: { [index: string]: unknown } = {}
   formData.forEach((value, key) => {
-    if (object.hasOwnProperty(key)) {
+    if (Object.prototype.hasOwnProperty.call(object, key)) {
       if (!Array.isArray(object[key])) {
         object[key] = [object[key]]
       }
-      object[key].push(value)
+      ;(object[key] as Array<unknown>).push(value)
     } else {
       object[key] = value
     }

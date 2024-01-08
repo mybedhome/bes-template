@@ -4,6 +4,7 @@
     <h2>yes</h2>
     <bes-container />
     <img src="../assets/logo.png" />
+    <router-link to="/table">go table</router-link>
   </div>
 </template>
 

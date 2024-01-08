@@ -5,6 +5,7 @@ import requestStore from '@/utils/requestStore'
 export enum RouteName {
   HOME = 'home',
   WEBGATE = 'webgate',
+  TABLE = 'table',
   NOTFOUND = 'not-found',
   NOPERMISSIONS = 'no-permissions'
 }
@@ -25,6 +26,11 @@ const router = createRouter({
       path: '/webgate',
       name: RouteName.WEBGATE,
       component: () => import('@/views/index.vue')
+    },
+    {
+      path: '/table',
+      name: RouteName.TABLE,
+      component: () => import('@/views/table/index.vue')
     },
     {
       path: '/no-permissions',

@@ -1,46 +1,38 @@
 <template>
   <div class="box">
-    <el-table
-      :data="tableData"
-      border
-      ref="tableRef"
-      @header-dragend="handleHeaderDragend"
-    >
-      <el-table-column prop="date" label="日期" width="180">
+    <el-table :data="tableData" border ref="tableRef">
+      <el-table-column
+        width="180"
+        v-for="col in columns"
+        :key="col.prop"
+        v-bind="col"
+      >
         <template #header>
           <div class="bes-column">
-            <span>日期</span>
-            <span class="resizer"></span>
+            <span>{{ col.label }}</span>
+            <span
+              class="resizer"
+              :class="{ 'resizer-pressed': col.pressed }"
+              :ref="(el) => onMousePressed(el as Element, col)"
+            ></span>
           </div>
         </template>
       </el-table-column>
-      <el-table-column prop="name" label="姓名" width="180" />
-      <el-table-column prop="name" label="年龄" width="180" />
-      <el-table-column prop="name" label="班级" />
-      <el-table-column prop="name" label="年级" width="180" />
-      <el-table-column
-        prop="name"
-        label="操作"
-        width="180"
-        :resizable="false"
-      />
+
+      <el-table-column label="操作" width="180" :resizable="false" />
     </el-table>
   </div>
 </template>
-
-<script>
+<script lang="ts">
 export default {
   name: 'TableView'
 }
 </script>
-<script setup>
-import { useEventListener } from '@vueuse/core'
-import { watch } from 'vue'
-import { onMounted } from 'vue'
+<script setup lang="ts">
+import { useMousePressed } from '@vueuse/core'
+import { Ref, onMounted } from 'vue'
 import { ref } from 'vue'
 const tableRef = ref(null)
-const canResize = ref(false)
-const draging = ref(false)
 const tableData = ref([
   {
     date: '2016-05-02',
@@ -52,15 +44,39 @@ const tableData = ref([
   }
 ])
 
-watch(tableRef, (table) => {
-  if (table) {
-    console.log('state', table)
+const columns = ref([
+  {
+    label: '日期',
+    prop: 'date',
+    pressed: null
+  },
+  {
+    label: '姓名',
+    prop: 'name',
+    pressed: null
+  },
+  {
+    label: '年龄',
+    prop: 'age',
+    pressed: null
+  },
+  {
+    label: '班级',
+    prop: 'class',
+    pressed: null
   }
-})
+])
 
-const handleHeaderDragend = () => {
-  draging.value = true
+const onMousePressed = (el: Element, col: { pressed: Ref<boolean> | null }) => {
+  if (col.pressed === null) {
+    const { pressed } = useMousePressed({
+      target: el as HTMLElement,
+      touch: false
+    })
+    col.pressed = pressed
+  }
 }
+
 onMounted(() => {})
 </script>
 
@@ -68,10 +84,6 @@ onMounted(() => {})
 body[style*='col-resize'] {
   cursor: default !important;
 }
-/* .el-table th:not(:last-of-type) .cell:hover::after {
-  background-color: rgba(0, 0, 255, 0.5) !important;
-  width: 2px !important;
-} */
 </style>
 
 <style scoped lang="scss">
@@ -103,6 +115,10 @@ body[style*='col-resize'] {
     background-color: #4b6eef;
   }
 }
+.resizer-pressed {
+  width: 2px;
+  background-color: #4b6eef;
+}
 body[style*='col-resize'] {
   .el-table thead th:not(:last-of-type)::after {
     background-color: #4b6eef !important;
@@ -113,9 +129,9 @@ body[style*='col-resize'] {
   .el-table th.el-table__cell.is-leaf {
     border-bottom: none;
   }
-  // .el-table--border .el-table__cell {
-  //   border-right: none;
-  // }
+  .el-table--border .el-table__cell {
+    border-right: none;
+  }
   .el-table thead th {
     position: relative;
   }

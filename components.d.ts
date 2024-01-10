@@ -9,8 +9,6 @@ declare module 'vue' {
   export interface GlobalComponents {
     BesContainer: typeof import('./src/components/bes-container/index.vue')['default']
     ElConfigProvider: typeof import('element-plus/es')['ElConfigProvider']
-    ElTable: typeof import('element-plus/es')['ElTable']
-    ElTableColumn: typeof import('element-plus/es')['ElTableColumn']
     RouterLink: typeof import('vue-router')['RouterLink']
     RouterView: typeof import('vue-router')['RouterView']
   }

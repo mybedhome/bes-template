@@ -8,11 +8,14 @@
     "allowSyntheticDefaultImports": true,
     "esModuleInterop": true,
     "isolatedModules": true,
+    "skipLibCheck": true,
+    "forceConsistentCasingInFileNames": true,
     "allowJs": true,
     "checkJs": true,
     "paths": {
       "@/*": ["src/*"]
-    }
+    },
+    "types": ["element-plus/global"]
   },
   "include": ["src/**/*.ts", "src/**/*.vue", "./**/*.d.ts"],
   "exclude": ["node_modules", "dist"]

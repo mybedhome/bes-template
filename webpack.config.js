@@ -109,14 +109,7 @@ module.exports = function (env, argv) {
           arr: [111]
         })
       }),
-      new MiniCssExtractPlugin({
-        filename: '[name].[contenthash].css',
-        chunkFilename: '[id].[contenthash].css'
-      }),
-      new VueLoaderPlugin(),
-      new HtmlWebpackPlugin({
-        template: 'public/index.html'
-      }),
+
       new ForkTsCheckerWebpackPlugin(),
       new ForkTsCheckerNotifierWebpackPlugin({
         title: 'TypeScript',
@@ -127,6 +120,14 @@ module.exports = function (env, argv) {
       }),
       Components({
         resolvers: [ElementPlusResolver()]
+      }),
+      new MiniCssExtractPlugin({
+        filename: '[name].[contenthash].css',
+        chunkFilename: '[id].[contenthash].css'
+      }),
+      new VueLoaderPlugin(),
+      new HtmlWebpackPlugin({
+        template: 'public/index.html'
       })
     ],
     resolve: {

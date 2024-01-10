@@ -2,27 +2,18 @@
   <div class="box">
     <el-table :data="tableData" border ref="tableRef">
       <el-table-column type="selection" width="55" />
-      <el-table-column
-        width="180"
-        v-for="col in columns"
-        :key="col.prop"
-        v-bind="col"
-      >
+      <el-table-column v-for="col in columns" :key="col.prop" v-bind="col">
         <template #header>
-          <!-- <div class="bes-column">
-            <span>{{ col.label }}</span>
-           
-          </div> -->
           {{ col.label }}
           <span
             class="resizer"
             :class="{ 'resizer-pressed': col.pressed }"
-            :ref="(el) => onMousePressed(el as Element, col)"
+            :ref="(el) => onMousePressed(el as Element, col as BesTableColumn)"
           ></span>
         </template>
       </el-table-column>
 
-      <el-table-column label="操作" width="180" :resizable="false" />
+      <el-table-column label="操作" :resizable="false" />
     </el-table>
   </div>
 </template>
@@ -35,6 +26,12 @@ export default {
 import { useMousePressed } from '@vueuse/core'
 import { Ref, onMounted } from 'vue'
 import { ref } from 'vue'
+import { type TableColumnCtx } from 'element-plus'
+
+type BesTableColumn = Partial<
+  TableColumnCtx<{ date: string; name: string }>
+> & { pressed?: Ref<boolean> }
+
 const tableRef = ref(null)
 const tableData = ref([
   {
@@ -47,34 +44,30 @@ const tableData = ref([
   }
 ])
 
-const columns = ref([
+const columns = ref<BesTableColumn[]>([
   {
     label: '日期',
     prop: 'date',
-    sortable: true,
-    pressed: null,
-    filters: [{ text: '2016-06-02', value: '2016-06-02' }]
+    sortable: true
+    // filters: [{ text: '2016-06-02', value: '2016-06-02' }]
   },
   {
     label: '姓名',
     prop: 'name',
-    sortable: true,
-    pressed: null
+    sortable: true
   },
   {
     label: '年龄',
-    prop: 'age',
-    pressed: null
+    prop: 'age'
   },
   {
     label: '班级',
-    prop: 'class',
-    pressed: null
+    prop: 'class'
   }
 ])
 
-const onMousePressed = (el: Element, col: { pressed: Ref<boolean> | null }) => {
-  if (col.pressed === null) {
+const onMousePressed = (el: Element, col: BesTableColumn) => {
+  if (col.pressed === undefined) {
     const { pressed } = useMousePressed({
       target: el as HTMLElement,
       touch: false

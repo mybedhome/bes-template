@@ -1,6 +1,7 @@
 <template>
   <div class="box">
     <el-table :data="tableData" border ref="tableRef">
+      <el-table-column type="selection" width="55" />
       <el-table-column
         width="180"
         v-for="col in columns"
@@ -8,14 +9,16 @@
         v-bind="col"
       >
         <template #header>
-          <div class="bes-column">
+          <!-- <div class="bes-column">
             <span>{{ col.label }}</span>
-            <span
-              class="resizer"
-              :class="{ 'resizer-pressed': col.pressed }"
-              :ref="(el) => onMousePressed(el as Element, col)"
-            ></span>
-          </div>
+           
+          </div> -->
+          {{ col.label }}
+          <span
+            class="resizer"
+            :class="{ 'resizer-pressed': col.pressed }"
+            :ref="(el) => onMousePressed(el as Element, col)"
+          ></span>
         </template>
       </el-table-column>
 
@@ -48,11 +51,14 @@ const columns = ref([
   {
     label: '日期',
     prop: 'date',
-    pressed: null
+    sortable: true,
+    pressed: null,
+    filters: [{ text: '2016-06-02', value: '2016-06-02' }]
   },
   {
     label: '姓名',
     prop: 'name',
+    sortable: true,
     pressed: null
   },
   {
@@ -87,64 +93,47 @@ body[style*='col-resize'] {
 </style>
 
 <style scoped lang="scss">
+::v-deep th.el-table__cell.is-sortable {
+  cursor: pointer !important;
+}
+
 .box {
   padding: 100px;
 }
 
-.bes-column {
-  display: flex;
-  align-items: center;
-  position: relative;
-  width: 100%;
-  height: 100%;
-  padding: 0 12px;
-  box-sizing: border-box;
-}
 .resizer {
   position: absolute;
   right: 0;
   top: 50%;
   transform: translateY(-50%);
-  width: 1px;
+  width: 3px;
   cursor: col-resize;
   height: calc(100% - 20px);
-  background-color: red;
+  border-right: 1px solid #dfe2e7;
   user-select: none;
+  z-index: 9;
   &:hover {
-    width: 2px;
-    background-color: #4b6eef;
+    border-right: 2px solid #4b6eef;
   }
 }
 .resizer-pressed {
-  width: 2px;
-  background-color: #4b6eef;
+  width: 3px;
+  border-right: 2px solid #4b6eef;
 }
-body[style*='col-resize'] {
-  .el-table thead th:not(:last-of-type)::after {
-    background-color: #4b6eef !important;
-    width: 2px;
-  }
-}
+
 ::v-deep {
-  .el-table th.el-table__cell.is-leaf {
-    border-bottom: none;
-  }
   .el-table--border .el-table__cell {
     border-right: none;
-  }
-  .el-table thead th {
-    position: relative;
   }
   th.el-table__cell {
     padding: 0;
     height: 40px;
+    background-color: #f3f5fc;
   }
   th.el-table__cell .cell {
     height: 100%;
-    padding: 0;
+    line-height: 40px;
+    // padding: 0;
   }
-  // .el-table .cell {
-  //   padding: 0;
-  // }
 }
 </style>

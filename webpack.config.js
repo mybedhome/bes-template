@@ -59,7 +59,10 @@ module.exports = function (env, argv) {
         {
           test: /\.vue$/,
           include: path.resolve(__dirname, 'src'),
-          loader: 'vue-loader'
+          loader: 'vue-loader',
+          options: {
+            prettify: false
+          }
         },
         {
           test: /\.(t|j)sx?$/,
@@ -96,6 +99,7 @@ module.exports = function (env, argv) {
       ]
     },
     plugins: [
+      new VueLoaderPlugin(),
       new webpack.optimize.LimitChunkCountPlugin({
         maxChunks: 5
       }),
@@ -125,7 +129,7 @@ module.exports = function (env, argv) {
         filename: '[name].[contenthash].css',
         chunkFilename: '[id].[contenthash].css'
       }),
-      new VueLoaderPlugin(),
+
       new HtmlWebpackPlugin({
         template: 'public/index.html'
       })

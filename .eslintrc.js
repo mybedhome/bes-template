@@ -22,5 +22,14 @@ module.exports = {
         ignores: ['index']
       }
     ]
-  }
+  },
+  overrides: [
+    {
+      files: ['src/types/typings.d.ts'],
+      rules: {
+        '@typescript-eslint/no-explicit-any': 'off',
+        '@typescript-eslint/ban-types': 'off'
+      }
+    }
+  ]
 }

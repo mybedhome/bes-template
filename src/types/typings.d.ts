@@ -1,4 +1,4 @@
-declare var require: {
+declare let require: {
   (path: string): any
   (paths: string[], callback: (...modules: any[]) => void): void
   ensure: (
@@ -44,4 +44,9 @@ declare module '*.css' {
 declare module '*.scss' {
   const content: any
   export default content
+}
+
+declare module '*.json' {
+  const value: any
+  export default value
 }

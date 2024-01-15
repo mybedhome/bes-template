@@ -135,10 +135,11 @@ module.exports = function (env, argv) {
       })
     ],
     resolve: {
-      extensions: ['.ts', '.vue', '.js'],
+      extensions: ['.vue', '.ts', '.js', '.json'],
       alias: {
         '@': path.resolve(__dirname, 'src/')
       },
+      // 明确不解析符号链接, 加快构建速度
       symlinks: false
     }
   }

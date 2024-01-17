@@ -1,4 +1,3 @@
-import { usePermissionsStore } from '@/stores/permissions'
 import { createRouter, createWebHashHistory, type RouteMeta } from 'vue-router'
 import requestStore from '@/utils/requestStore'
 // 路由名称与权限名称必须一致

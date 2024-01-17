@@ -1,5 +1,5 @@
 <template>
-  <el-config-provider>
+  <el-config-provider namespace="ep">
     <router-view v-slot="{ Component }">
       <component :is="Component" :key="$route.path" />
     </router-view>
@@ -8,7 +8,7 @@
 
 <script>
 import { defineComponent } from 'vue'
-import '@/assets/styles/common.css'
+
 export default defineComponent({
   name: 'App'
 })

@@ -76,7 +76,12 @@ module.exports = function (env, argv) {
             isProduction ? MiniCssExtractPlugin.loader : 'vue-style-loader',
             'css-loader',
             'postcss-loader',
-            'sass-loader'
+            {
+              loader: 'sass-loader',
+              options: {
+                additionalData: `@use "@/styles/element.scss" as *;`
+              }
+            }
           ]
         },
         {
@@ -123,8 +128,15 @@ module.exports = function (env, argv) {
         resolvers: [ElementPlusResolver()]
       }),
       Components({
-        resolvers: [ElementPlusResolver()]
+        resolvers: [
+          ElementPlusResolver({
+            importStyle: 'sass',
+            directives: true,
+            version: '2.1.5'
+          })
+        ]
       }),
+
       new MiniCssExtractPlugin({
         filename: '[name].[contenthash].css',
         chunkFilename: '[id].[contenthash].css'

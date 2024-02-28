@@ -6,7 +6,8 @@ export enum RouteName {
   WEBGATE = 'webgate',
   TABLE = 'table',
   NOTFOUND = 'not-found',
-  NOPERMISSIONS = 'no-permissions'
+  NOPERMISSIONS = 'no-permissions',
+  INDEX = 'index'
 }
 
 export type CustomRouteMeta = RouteMeta & {
@@ -24,13 +25,21 @@ const router = createRouter({
     {
       path: '/webgate',
       name: RouteName.WEBGATE,
-      component: () => import('@/views/index.vue')
+      children: [
+        {
+          path: '',
+          name: RouteName.INDEX,
+          component: () => import('@/views/index.vue')
+        },about:blank#blocked
+        {
+          path: '/table',
+          name: RouteName.TABLE,
+          component: () => import('@/views/table/index.vue')
+        }
+      ],
+      component: () => import('@/layout/TheLayout.vue')
     },
-    {
-      path: '/table',
-      name: RouteName.TABLE,
-      component: () => import('@/views/table/index.vue')
-    },
+
     {
       path: '/no-permissions',
       name: RouteName.NOPERMISSIONS,

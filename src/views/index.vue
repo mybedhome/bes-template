@@ -8,7 +8,6 @@
       <el-option value="2">选项二</el-option>
     </el-select>
     <bes-container />
-    <img src="../assets/logo.png" />
     <router-link to="/table">go table</router-link>
   </div>
 </template>

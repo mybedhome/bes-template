@@ -1,7 +1,10 @@
 import { createRouter, createWebHashHistory, type RouteMeta } from 'vue-router'
 import requestStore from '@/utils/requestStore'
+// import DefaultHeader from '@/layouts/header/DefaultHeader.vue'
+import LayoutComponent from '@/layouts/index.vue'
 // 路由名称与权限名称必须一致
 export enum RouteName {
+  INDEX = 'index',
   HOME = 'home',
   WEBGATE = 'webgate',
   TABLE = 'table',
@@ -18,18 +21,24 @@ const router = createRouter({
   routes: [
     {
       path: '/',
-      name: RouteName.HOME,
+      name: RouteName.INDEX,
       redirect: '/webgate'
     },
     {
       path: '/webgate',
       name: RouteName.WEBGATE,
-      component: () => import('@/views/index.vue')
-    },
-    {
-      path: '/table',
-      name: RouteName.TABLE,
-      component: () => import('@/views/table/index.vue')
+      component: LayoutComponent,
+      children: [
+        {
+          path: '',
+          component: () => import('@/views/index.vue')
+        },
+        {
+          path: '/table',
+          name: RouteName.TABLE,
+          component: () => import('@/views/table/index.vue')
+        }
+      ]
     },
     {
       path: '/no-permissions',

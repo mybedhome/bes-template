@@ -7,10 +7,16 @@ import registerGlobalComponent from './globalComponents'
 
 const app = createApp(App)
 app.use(createPinia())
-const mount = () => {
+
+const mount = async () => {
   registerGlobalComponent(app)
   app.use(router)
   app.mount('#app')
+  if (process.env.NODE_ENV === 'development') {
+    window.ResizeObserver = (
+      await import('@juggle/resize-observer')
+    ).ResizeObserver
+  }
 }
 
 mount()

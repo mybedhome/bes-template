@@ -30,7 +30,7 @@ const router = createRouter({
           path: '',
           name: RouteName.INDEX,
           component: () => import('@/views/index.vue')
-        },about:blank#blocked
+        },
         {
           path: '/table',
           name: RouteName.TABLE,

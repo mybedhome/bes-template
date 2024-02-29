@@ -1,9 +1,9 @@
 <template>
-  <header class="header-block"><TheHeader /></header>
-  <div class="content-block">
-    <aside class="aside-block"><TheAside /></aside>
-    <main class="main-block">
-      <RouterView :key="$route.path" />
+  <header class="header"><TheHeader /></header>
+  <div class="content">
+    <aside class="aside"><TheAside /></aside>
+    <main class="main">
+      <div class="container"><RouterView /></div>
     </main>
   </div>
 </template>
@@ -12,32 +12,35 @@
 import TheHeader from './header/default/TheHeader.vue'
 import TheAside from './aside/TheAside.vue'
 import { RouterView } from 'vue-router'
-console.log('process.env', process.env.NODE_ENV)
 </script>
 
 <style scoped>
-.header-block {
+.header {
+  width: 100%;
   height: 50px;
   position: fixed;
   top: 0;
   z-index: 9999;
 }
-.content-block {
+.content {
   display: flex;
   position: relative;
   top: 50px;
 }
-.aside-block {
-  display: inline-block;
+.aside {
   width: 200px;
   height: 100vh;
   position: fixed;
-  top: 0;
+  top: 50px;
   bottom: 0;
   overflow-y: auto;
   overflow-x: hidden;
 }
-.main-block {
+.main {
   flex: 1;
+  margin-left: 200px;
+}
+.container {
+  margin: 0 auto;
 }
 </style>

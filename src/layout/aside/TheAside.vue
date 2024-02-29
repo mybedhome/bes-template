@@ -1,5 +1,5 @@
 <template>
-  <div class="aside-box"></div>
+  <div class="aside-box">kkk</div>
 </template>
 
 <script setup lang="ts"></script>

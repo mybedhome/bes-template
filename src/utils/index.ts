@@ -8,8 +8,23 @@ const isInt = (arg: unknown): boolean => Number.isInteger(arg)
 
 const isNaN = (arg: unknown): boolean => Number.isNaN(arg)
 
-const isWhatType = (type: string) => (arg: any) =>
-  !isNil(arg) && arg.constructor.name === type
+interface FormData {
+  new (): typeof FormData
+  forEach(
+    callback: (value: FormDataEntryValue, key: string, parent: FormData) => void
+  ): void
+}
+
+// const isWhatType = (type: string) => (arg: ConstructorType) =>
+//   !isNil(arg) && arg.constructor.name === type
+interface WithConstructor {
+  constructor: { name: string }
+}
+
+const isWhatType =
+  <T extends WithConstructor>(type: string) =>
+  (arg: T | undefined): boolean =>
+    typeof arg !== 'undefined' && arg.constructor.name === type
 
 const isFunction = isWhatType('Function')
 const isAsyncFunction = isWhatType('AsyncFunction')
@@ -29,17 +44,18 @@ const isSet = isWhatType('Set')
 const isWeakSet = isWhatType('WeakSet')
 const isPromise = isWhatType('Promise')
 
-const isEmptyArray = (arg: any) => !arg || !isArray(arg) || arg.length === 0
-const isValidArray = (arg: any) => isArray(arg) && arg.length > 0
+const isEmptyArray = (arg: Array<unknown>) => isArray(arg) && arg.length === 0
+const isValidArray = (arg: Array<unknown>) => isArray(arg) && arg.length > 0
 
-const isPlainObject = (arg: { constructor?: Function }): boolean =>
-  !isNil(arg) && arg.constructor === Object
+const isPlainObject = (
+  arg: { constructor?: () => unknown } | unknown
+): boolean => !isNil(arg) && !!arg && arg.constructor === Object
 
-const isEmptyObject = (arg: any) => {
-  return !isPlainObject(arg) || Object.keys(arg).length === 0
+const isEmptyObject = (arg: Record<string, unknown>) => {
+  return isPlainObject(arg) || Object.keys(arg).length === 0
 }
 
-const isEmpty = (arg: any) => {
+const isEmpty = (arg: unknown) => {
   if (
     typeof arg === 'undefined' ||
     arg === null ||
@@ -55,50 +71,58 @@ const isEmpty = (arg: any) => {
 
 // 解析json字符串为json对象
 const parseJSON = <V = Record<string, unknown>>(
-  arg: any,
+  arg: string,
   failResult = {} as V
 ): V => {
   try {
     return JSON.parse(arg)
-  } catch (error: any) {
-    console.error('解析json失败: ' + error.message)
+  } catch (error) {
+    if (error instanceof Error) {
+      // eslint-disable-next-line no-console
+      console.error(error.message)
+    }
     return failResult
   }
 }
 
 /**
- * @param { boolean } hasHyphen 是否有连字符号
+ * @param { boolean } isHyphen 是否有连字符号
+ * @param {boolean} isUppercase 是否大写
  * @returns 唯一的guid
  */
-const guid = (hasHyphen?: boolean) => {
-  const id = 'xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx'.replace(/x/g, function () {
-    return (~~(Math.random() * 16)).toString(16)
-  })
-  return hasHyphen !== false ? id : id.replaceAll('-', '')
+const guid = (option: { isHyphen: boolean; isUppercase: boolean }) => {
+  const opt = Object.assign({ isHyphen: false, isUppercase: false }, option)
+  let str = ''
+  const hexDigits = '0123456789abcdef'
+  for (let i = 0; i < 32; i++) {
+    const index = Math.floor(Math.random() * 16)
+    const char = opt.isUppercase
+      ? hexDigits[index].toUpperCase()
+      : hexDigits[index]
+    const hyptenChar =
+      opt.isHyphen && [8, 12, 16, 20].includes(i) ? '-' + char : char
+    str += hyptenChar
+  }
+  return str
 }
 
 // 查找对象属性的值，支持路径嵌套查询
-const find = (obj: Record<string, unknown>, ...paths: any[]) => {
+const find = (obj: Record<string, unknown>, ...paths: Array<string>) => {
+  // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+  // @ts-expect-error
   return paths.reduce((acc, path) => {
     return acc?.[path]
   }, obj)
 }
 
-const delay = <D>(timeout: number, data?: D) => {
-  return new Promise<D | undefined>((resolve) => {
-    setTimeout(() => {
-      resolve(data)
-    }, timeout)
-  })
-}
-
-const px2vw = (
-  px: number,
-  options = {} as { hasUnit: boolean; baseWidth: number }
-): string => {
-  const opt = Object.assign({ hasUnit: true, baseWidth: 375 }, options)
-  const value = ((px / opt.baseWidth) * 100).toString()
-  return opt.hasUnit ? value + 'vw' : value
+// 遍历对象
+function forEachObject<T extends object>(
+  obj: T,
+  fn: (value: T[keyof T], key: string) => void
+): void {
+  for (const key in obj) {
+    fn(obj[key], key)
+  }
 }
 
 // 将formData转换为json
@@ -136,6 +160,52 @@ const jsonToFormData = (data: Record<string, unknown>) => {
   return fd
 }
 
+/**
+ * 对象数组转换成对象
+ * @param array 对象数组
+ * @param key 对象的某个属性必须具有唯一值，通常是id
+ * @returns 返回对象属性的值作为属性的对象
+ */
+function arrayToObject<T extends Record<string, never>>(
+  array: T[],
+  key: keyof T = 'id'
+): Record<T[keyof T], T> {
+  const obj = {} as Record<T[keyof T], T>
+  array.forEach((item) => {
+    obj[item[key]] = item
+  })
+  return obj
+}
+
+// 生成指定长度的随机数字
+const generateRandomNumber = (length: number = 8): string =>
+  Math.floor(
+    Math.pow(10, length - 1) + Math.random() * 9 * Math.pow(10, length - 1)
+  ).toString()
+
+const delay = <D>(timeout: number, data?: D) => {
+  return new Promise<D | undefined>((resolve) => {
+    setTimeout(() => {
+      resolve(data)
+    }, timeout)
+  })
+}
+
+const px2vw = (
+  px: number,
+  options = {} as { hasUnit: boolean; baseWidth: number }
+): string => {
+  const opt = Object.assign({ hasUnit: true, baseWidth: 375 }, options)
+  const value = ((px / opt.baseWidth) * 100).toString()
+  return opt.hasUnit ? value + 'vw' : value
+}
+
+const px2rem = (px: number, base = 16, hasUnit: boolean = true) => {
+  return hasUnit
+    ? (px / base).toFixed(4) + 'rem'
+    : Number((px / base).toFixed(4))
+}
+
 const platform = () => {
   const ua = navigator.userAgent
   const isWindowsPhone = / (?:Windows Phone)/.test(ua)
@@ -146,16 +216,50 @@ const platform = () => {
     /(?:iPad|PlayBook)/.test(ua) ||
     (isAndroid && !/ (?:Mobile)/.test(ua)) ||
     (isFireFox && / (?:Tablet)/.test(ua))
-  const isPhone = / (?:iPhone)/.test(ua) && !isTablet
-  const isMobile = isPhone || isAndroid || isSymbian || isTablet
+  const isIos = / (?:iPhone)/.test(ua) && !isTablet
+  const isMobile = isIos || isAndroid || isSymbian || isTablet
   const isPc = !isMobile
   return {
     isMobile,
     isPc,
     isAndroid,
-    isPhone,
+    isIos,
     isTablet
   }
+}
+
+const getCssVar = (varName: string, element: HTMLElement) => {
+  const dom = element || document.querySelector('body')
+  return getComputedStyle(dom).getPropertyValue(varName)
+}
+
+const mixColor = function (color_1: string, color_2: string, weight: number) {
+  function d2h(d: number) {
+    return d.toString(16)
+  } // convert a decimal value to hex
+  function h2d(h: string) {
+    return parseInt(h, 16)
+  } // convert a hex value to decimal
+
+  weight = typeof weight !== 'undefined' ? weight : 50 // set the weight to 50%, if that argument is omitted
+
+  let color = '#'
+
+  for (let i = 0; i <= 5; i += 2) {
+    // loop through each of the 3 hex pairs—red, green, and blue
+    const v1 = h2d(color_1.substr(i, 2)) // extract the current pairs
+    const v2 = h2d(color_2.substr(i, 2))
+    // combine the current pairs from each source color, according to the specified weight
+    let val = d2h(Math.floor(v2 + (v1 - v2) * (weight / 100.0)))
+
+    while (val.length < 2) {
+      val = '0' + val
+    } // prepend a '0' if val results in a single digit
+
+    color += val // concatenate val to our new color string
+  }
+
+  return color // PROFIT!
 }
 
 export const utils = {
@@ -192,6 +296,12 @@ export const utils = {
   delay,
   guid,
   px2vw,
+  px2rem,
   find,
-  platform
+  platform,
+  generateRandomNumber,
+  forEachObject,
+  arrayToObject,
+  getCssVar,
+  mixColor
 }

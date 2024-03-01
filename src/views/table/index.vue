@@ -86,7 +86,7 @@ body[style*='col-resize'] {
 </style>
 
 <style scoped lang="scss">
-::v-deep th.el-table__cell.is-sortable {
+::v-deep th.ep-table__cell.is-sortable {
   cursor: pointer !important;
 }
 
@@ -115,15 +115,15 @@ body[style*='col-resize'] {
 }
 
 ::v-deep {
-  .el-table--border .el-table__cell {
+  .ep-table--border .ep-table__cell {
     border-right: none;
   }
-  th.el-table__cell {
+  th.ep-table__cell {
     padding: 0;
     height: 40px;
     background-color: #f3f5fc;
   }
-  th.el-table__cell .cell {
+  th.ep-table__cell .cell {
     height: 100%;
     line-height: 40px;
     // padding: 0;

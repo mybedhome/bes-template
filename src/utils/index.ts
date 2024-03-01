@@ -71,11 +71,11 @@ const isEmpty = (arg: unknown) => {
 
 // 解析json字符串为json对象
 const parseJSON = <V = Record<string, unknown>>(
-  arg: string,
+  arg: string | null,
   failResult = {} as V
 ): V => {
   try {
-    return JSON.parse(arg)
+    return typeof arg === 'string' ? JSON.parse(arg) : arg
   } catch (error) {
     if (error instanceof Error) {
       // eslint-disable-next-line no-console
@@ -236,30 +236,53 @@ const getCssVar = (varName: string, element: HTMLElement) => {
 const mixColor = function (color_1: string, color_2: string, weight: number) {
   function d2h(d: number) {
     return d.toString(16)
-  } // convert a decimal value to hex
+  }
   function h2d(h: string) {
     return parseInt(h, 16)
-  } // convert a hex value to decimal
+  }
 
-  weight = typeof weight !== 'undefined' ? weight : 50 // set the weight to 50%, if that argument is omitted
+  weight = typeof weight !== 'undefined' ? weight : 50
 
   let color = '#'
-
+  const c1 = color_1.match(/#?(.{6})/),
+    c2 = color_2.match(/#?(.{6})/)
+  if (!c1 || !c2) {
+    throw new Error('请传入合法的16进制颜色值!')
+  }
   for (let i = 0; i <= 5; i += 2) {
-    // loop through each of the 3 hex pairs—red, green, and blue
-    const v1 = h2d(color_1.substr(i, 2)) // extract the current pairs
-    const v2 = h2d(color_2.substr(i, 2))
-    // combine the current pairs from each source color, according to the specified weight
+    const v1 = h2d(c1[1].substring(i, i + 2))
+    const v2 = h2d(c2[1].substring(i, i + 2))
     let val = d2h(Math.floor(v2 + (v1 - v2) * (weight / 100.0)))
 
     while (val.length < 2) {
       val = '0' + val
-    } // prepend a '0' if val results in a single digit
+    }
 
-    color += val // concatenate val to our new color string
+    color += val
   }
 
-  return color // PROFIT!
+  return color
+}
+
+const getEpNamespace = () => {
+  for (const sheet of document.styleSheets) {
+    // 遍历样式表中的所有规则
+    for (const rule of sheet.cssRules) {
+      // 检查规则是否是 :root 伪类
+      if (rule instanceof CSSStyleRule && rule.selectorText === ':root') {
+        // 遍历 :root 伪类中定义的所有CSS属性
+        for (const property of rule.style) {
+          // 检查属性名是否以 '--' 开头
+          if (property.startsWith('--') && property.includes('color-white')) {
+            const matchs = property.match(/--(.*)-color-white/)
+            if (matchs) return matchs[1]
+            return 'ep'
+          }
+        }
+        break
+      }
+    }
+  }
 }
 
 export const utils = {
@@ -303,5 +326,6 @@ export const utils = {
   forEachObject,
   arrayToObject,
   getCssVar,
-  mixColor
+  mixColor,
+  getEpNamespace
 }

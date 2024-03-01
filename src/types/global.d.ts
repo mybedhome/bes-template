@@ -6,6 +6,7 @@ declare global {
       CLIENT_ID: string
       OAUTH_MOBILE_URL: string
       OAUTH_PC_URL: string
+      THEME_COLOR: string
     }
   }
 }

@@ -1,14 +1,14 @@
 <template>
   <div class="box">
-    <el-table :data="tableData" border ref="tableRef">
+    <el-table ref="tableRef" :data="tableData" border>
       <el-table-column type="selection" width="55" />
       <el-table-column v-for="col in columns" :key="col.prop" v-bind="col">
         <template #header>
           {{ col.label }}
           <span
+            :ref="(el) => onMousePressed(el as Element, col as BesTableColumn)"
             class="resizer"
             :class="{ 'resizer-pressed': col.pressed }"
-            :ref="(el) => onMousePressed(el as Element, col as BesTableColumn)"
           ></span>
         </template>
       </el-table-column>

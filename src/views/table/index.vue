@@ -1,14 +1,14 @@
 <template>
   <div class="box">
-    <el-table :data="tableData" border ref="tableRef">
+    <el-table ref="tableRef" :data="tableData" border class="borderless-table">
       <el-table-column type="selection" width="55" />
       <el-table-column v-for="col in columns" :key="col.prop" v-bind="col">
         <template #header>
           {{ col.label }}
           <span
+            :ref="(el) => onMousePressed(el as Element, col as BesTableColumn)"
             class="resizer"
             :class="{ 'resizer-pressed': col.pressed }"
-            :ref="(el) => onMousePressed(el as Element, col as BesTableColumn)"
           ></span>
         </template>
       </el-table-column>
@@ -86,7 +86,7 @@ body[style*='col-resize'] {
 </style>
 
 <style scoped lang="scss">
-::v-deep th.el-table__cell.is-sortable {
+::v-deep th.ep-table__cell.is-sortable {
   cursor: pointer !important;
 }
 
@@ -115,15 +115,15 @@ body[style*='col-resize'] {
 }
 
 ::v-deep {
-  .el-table--border .el-table__cell {
+  .ep-table--border .ep-table__cell {
     border-right: none;
   }
-  th.el-table__cell {
+  th.ep-table__cell {
     padding: 0;
     height: 40px;
     background-color: #f3f5fc;
   }
-  th.el-table__cell .cell {
+  th.ep-table__cell .cell {
     height: 100%;
     line-height: 40px;
     // padding: 0;

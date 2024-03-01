@@ -32,13 +32,13 @@ const router = createRouter({
         {
           path: '',
           component: () => import('@/views/index.vue')
-        },
-        {
-          path: '/table',
-          name: RouteName.TABLE,
-          component: () => import('@/views/table/index.vue')
         }
       ]
+    },
+    {
+      path: '/table',
+      name: RouteName.TABLE,
+      component: () => import('@/views/table/index.vue')
     },
     {
       path: '/no-permissions',

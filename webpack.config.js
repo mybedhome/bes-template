@@ -79,7 +79,7 @@ module.exports = function (env, argv) {
             {
               loader: 'sass-loader',
               options: {
-                additionalData: `@use "@/styles/element.scss" as *;`
+                additionalData: `@use "@/styles/element/var.scss" as *;`
               }
             }
           ]

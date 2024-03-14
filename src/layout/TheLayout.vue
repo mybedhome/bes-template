@@ -1,10 +1,22 @@
 <template>
-  <header class="header"><TheHeader /></header>
+  <!-- <header class="header"><TheHeader /></header>
   <div class="content">
     <aside class="aside"><TheAside /></aside>
     <main class="main">
       <div class="container"><RouterView /></div>
     </main>
+  </div> -->
+
+  <div class="common-layout">
+    <el-container>
+      <el-header><TheHeader /></el-header>
+      <el-container>
+        <el-aside width="200px"><TheAside /></el-aside>
+        <el-main
+          ><div class="container"><RouterView /></div
+        ></el-main>
+      </el-container>
+    </el-container>
   </div>
 </template>
 

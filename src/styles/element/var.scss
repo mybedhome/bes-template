@@ -1,5 +1,7 @@
+@use './config.scss' as *;
+
 @forward 'element-plus/theme-chalk/src/mixins/config.scss' with (
-  $namespace: 'ep'
+  $namespace: $namespace
 );
 
 @forward 'element-plus/theme-chalk/src/common/var.scss' with (
@@ -10,5 +12,9 @@
   ),
   $menu: (
     'horizontal-height': 50px
+  ),
+  $header: (
+    padding: 0,
+    height: 50px
   )
 );

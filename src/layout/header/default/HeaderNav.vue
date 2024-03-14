@@ -1,10 +1,9 @@
 <template>
   <div class="header-nav">
     <el-menu
+      class="bes-menu-default"
       :default-active="activeIndex"
-      class="el-menu-demo"
       mode="horizontal"
-      background-color="#545c64"
       @select="handleSelect"
     >
       <el-menu-item index="1">item one</el-menu-item>

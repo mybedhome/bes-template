@@ -1,1 +1,22 @@
 @use './common.scss';
+
+.theme-default {
+  .ep-menu-item.is-active {
+    background-color: var(--#{$namespace}-menu-hover-bg-color);
+  }
+
+  .bes-menu-default {
+    .ep-menu-item.is-active {
+      border-bottom: none;
+      background-color: transparent;
+    }
+    .ep-menu-item:not(.is-disabled):focus,
+    .ep-menu-item:not(.is-disabled):hover {
+      background-color: transparent;
+    }
+    .ep-menu-item {
+      border-bottom: none;
+      transition: none;
+    }
+  }
+}

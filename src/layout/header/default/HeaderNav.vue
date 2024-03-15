@@ -6,9 +6,15 @@
       mode="horizontal"
       @select="handleSelect"
     >
-      <el-menu-item index="1">item one</el-menu-item>
-      <el-menu-item index="2">item two</el-menu-item>
-      <el-menu-item index="3">item three</el-menu-item>
+      <el-menu-item index="1">
+        <svg-icon name="layout"></svg-icon>工作台</el-menu-item
+      >
+      <el-menu-item index="2">
+        <svg-icon name="detect"></svg-icon>工作流</el-menu-item
+      >
+      <el-menu-item index="3">
+        <svg-icon name="layout"></svg-icon>基础设置</el-menu-item
+      >
     </el-menu>
   </div>
 </template>

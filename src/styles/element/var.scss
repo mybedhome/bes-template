@@ -11,10 +11,14 @@
     )
   ),
   $menu: (
-    'horizontal-height': 50px
+    'horizontal-height': 50px,
+    'base-level-padding': 15px
   ),
   $header: (
     padding: 0,
     height: 50px
+  ),
+  $main: (
+    padding: 0
   )
 );

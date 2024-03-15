@@ -11,6 +11,9 @@ const mount = async () => {
   registerGlobalComponent(app)
   app.use(router)
   app.mount('#app')
+
+  // const files = require.context('../src/assets/icons', true, /\.svg$/)
+  // files.keys().forEach(files)
 }
 
 mount()

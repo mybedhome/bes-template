@@ -40,6 +40,8 @@ const prodOptions = {
     }
   }
 }
+
+const getDir = (dir) => path.resolve(__dirname, dir)
 module.exports = function (env, argv) {
   const isProduction = argv.mode === 'production'
   const otherOptions = isProduction ? prodOptions : devOptions
@@ -49,7 +51,7 @@ module.exports = function (env, argv) {
       index: './src/main.ts'
     },
     output: {
-      path: path.resolve(__dirname, 'dist'),
+      path: getDir('dist'),
       filename: '[name].[contenthash].js',
       clean: true,
       pathinfo: false
@@ -58,7 +60,7 @@ module.exports = function (env, argv) {
       rules: [
         {
           test: /\.vue$/,
-          include: path.resolve(__dirname, 'src'),
+          include: getDir('src'),
           loader: 'vue-loader',
           options: {
             prettify: false
@@ -67,7 +69,7 @@ module.exports = function (env, argv) {
         {
           test: /\.(t|j)sx?$/,
           exclude: /node_modules/,
-          include: path.resolve(__dirname, 'src'),
+          include: getDir('src'),
           loader: 'babel-loader'
         },
         {
@@ -94,12 +96,19 @@ module.exports = function (env, argv) {
           ]
         },
         {
-          test: /\.(png|svg|jpg|jpeg|gif)$/i,
-          type: 'asset/resource'
+          test: /\.(png|jpg|jpeg|svg|gif)$/i,
+          type: 'asset/resource',
+          exclude: getDir('src/assets/icons')
         },
         {
           test: /\.(woff|woff2|eot|ttf|otf)$/i,
           type: 'asset/resource'
+        },
+        {
+          test: /\.svg$/,
+          loader: 'svg-sprite-loader',
+          include: getDir('src/assets/icons'),
+          options: { symbolId: 'svg-icon-[name]' }
         }
       ]
     },

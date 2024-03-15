@@ -9,11 +9,11 @@
 
   <div class="common-layout">
     <el-container>
-      <el-header><TheHeader /></el-header>
+      <el-header ref="headerRef"><TheHeader /></el-header>
       <el-container>
         <el-aside width="200px"><TheAside /></el-aside>
         <el-main
-          ><div class="container"><RouterView /></div
+          ><div class="container"><RouterView :header-height="50" /></div
         ></el-main>
       </el-container>
     </el-container>
@@ -24,6 +24,13 @@
 import TheHeader from './header/default/TheHeader.vue'
 import TheAside from './aside/TheAside.vue'
 import { RouterView } from 'vue-router'
+import { ref, onMounted } from 'vue'
+const headerRef = ref(null)
+const navHeight = ref(0)
+onMounted(() => {
+  console.log('headerRef', headerRef)
+  console.log('hei', headerRef.value.offsetHeight)
+})
 </script>
 
 <style scoped>
@@ -53,6 +60,10 @@ import { RouterView } from 'vue-router'
   margin-left: 200px;
 }
 .container {
-  margin: 0 auto;
+  /* margin: 0 auto; */
+}
+
+.common-layout {
+  overflow: hidden;
 }
 </style>

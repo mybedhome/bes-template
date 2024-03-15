@@ -1,6 +1,9 @@
 @use './common.scss';
 
 .theme-default {
+  .ep-main {
+    background-color: #f0f2f7;
+  }
   .ep-menu-item.is-active {
     background-color: var(--#{$namespace}-menu-hover-bg-color);
   }

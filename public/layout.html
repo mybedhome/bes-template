@@ -1,0 +1,78 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Fixed Layout with Scrollable Main</title>
+    <style>
+      html,
+      body {
+        height: 100%;
+        margin: 0;
+        overflow: hidden;
+      }
+      * {
+        box-sizing: border-box;
+      }
+      #header {
+        background-color: #6fa1d2;
+        padding: 10px;
+        text-align: center;
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+      }
+      #footer {
+        background-color: #6fa1d2;
+        padding: 10px;
+        text-align: center;
+        position: fixed;
+        bottom: 0;
+        left: 200px; /* Same as the aside width */
+        right: 0;
+      }
+      #aside {
+        background-color: #b3cde3;
+        padding: 10px;
+        width: 200px;
+        position: fixed;
+        top: 42px; /* Adjust based on header height */
+        bottom: 0px; /* Adjust based on footer height */
+        overflow-y: auto;
+      }
+      #main {
+        margin-left: 200px; /* Same as the aside width */
+        margin-top: 50px; /* Adjust based on header height */
+        margin-bottom: 50px; /* Adjust based on footer height */
+        height: calc(
+          100% - 100px
+        ); /* Adjust height taking header and footer into account */
+        overflow-y: auto;
+      }
+      #main::-webkit-scrollbar,
+      #aside::-webkit-scrollbar {
+        display: none; /* Hide scrollbar for Chrome, Safari and Opera */
+      }
+      #main,
+      #aside {
+        -ms-overflow-style: none; /* Hide scrollbar for IE and Edge */
+      }
+      #main::-moz-scrollbar,
+      #aside::-moz-scrollbar {
+        display: none; /* Hide scrollbar for Firefox */
+      }
+    </style>
+  </head>
+  <body>
+    <div id="header">Header</div>
+    <div id="aside">Aside</div>
+    <div id="main">
+      <!-- Content here will be scrollable -->
+      Main
+      <div style="height: 1100px"></div>
+      <div>88888</div>
+    </div>
+    <div id="footer">Footer</div>
+  </body>
+</html>

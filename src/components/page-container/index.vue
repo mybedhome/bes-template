@@ -1,24 +1,42 @@
 <template>
   <div class="page-container">
-    <div class="page-header"><slot name="header"></slot></div>
-    <div class="page-content"><slot></slot></div>
+    <div ref="pageHeader" class="page-header"><slot name="header"></slot></div>
+    <div class="page-content" :style="{ height: contentHeight }">
+      <slot></slot>
+    </div>
   </div>
 </template>
 
-<script setup lang="ts"></script>
+<script setup lang="ts">
+import { ref, onMounted, defineProps, inject, Ref, computed } from 'vue'
+interface Props {}
+// const props = defineProps<Props>()
+const pageHeader = ref<HTMLElement | null>(null)
+
+// const contentHeight = ref('')
+
+const contentHeight = computed(() => {
+  const navHeight = inject<Ref<number>>('navHeight')
+  if (pageHeader.value && navHeight) {
+    const h = pageHeader.value.offsetHeight + navHeight.value
+    return `calc(100vh - ${h}px)`
+  }
+  return 0
+})
+</script>
 
 <style scoped>
 .page-container {
-  /* padding: 20px; */
-  /* height: 100%; */
 }
 .page-header {
   background-color: transparent;
   line-height: 1;
-  /* position: absolute; */
 }
 .page-content {
-  /* height: 100%; */
-  /* padding-top: 68px; */
+  overflow-y: auto;
+  padding: 0 20px;
+  &::-webkit-scrollbar {
+    display: none; /* Hide scrollbar for Chrome, Safari and Opera */
+  }
 }
 </style>

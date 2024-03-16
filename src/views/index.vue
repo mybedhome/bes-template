@@ -3,14 +3,14 @@
     <template #header>
       <page-header></page-header>
     </template>
-    <div>
-      <h1 class="title">index page</h1>
+    <group>
+      <!-- <template #title><h1 class="title">index page</h1></template> -->
       <div>
         <h2>yes</h2>
       </div>
       <div style="height: 700px"></div>
       <div>底下的内容</div>
-    </div>
+    </group>
   </page-container>
 </template>
 

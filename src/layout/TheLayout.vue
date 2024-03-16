@@ -1,19 +1,12 @@
 <template>
-  <!-- <header class="header"><TheHeader /></header>
-  <div class="content">
-    <aside class="aside"><TheAside /></aside>
-    <main class="main">
-      <div class="container"><RouterView /></div>
-    </main>
-  </div> -->
-
   <div class="common-layout">
     <el-container>
+      <!-- <TheHeader /> -->
       <el-header ref="headerRef"><TheHeader /></el-header>
       <el-container>
         <el-aside width="200px"><TheAside /></el-aside>
         <el-main
-          ><div class="container"><RouterView :header-height="50" /></div
+          ><div class="container"><RouterView /></div
         ></el-main>
       </el-container>
     </el-container>
@@ -24,12 +17,15 @@
 import TheHeader from './header/default/TheHeader.vue'
 import TheAside from './aside/TheAside.vue'
 import { RouterView } from 'vue-router'
-import { ref, onMounted } from 'vue'
-const headerRef = ref(null)
+import { ref, onMounted, provide } from 'vue'
+
+const headerRef = ref<InstanceType<typeof TheHeader> | null>(null)
 const navHeight = ref(0)
+provide('navHeight', navHeight)
 onMounted(() => {
-  console.log('headerRef', headerRef)
-  console.log('hei', headerRef.value.offsetHeight)
+  if (headerRef.value) {
+    navHeight.value = headerRef.value.$el.offsetHeight
+  }
 })
 </script>
 

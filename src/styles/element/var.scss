@@ -1,7 +1,7 @@
 @use 'sass:map';
 @use './config.scss' as *;
 
-$headerHeight: 50px;
+$nav-height: 50px;
 
 @forward 'element-plus/theme-chalk/src/mixins/config.scss' with (
   $namespace: $namespace
@@ -14,12 +14,12 @@ $headerHeight: 50px;
     )
   ),
   $menu: (
-    'horizontal-height': $headerHeight,
+    'horizontal-height': $nav-height,
     'base-level-padding': 15px
   ),
   $header: (
     padding: 0,
-    height: $headerHeight
+    height: $nav-height
   ),
   $main: (
     padding: 0

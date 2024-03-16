@@ -1,16 +1,9 @@
 <template>
-  <div class="common-layout">
-    <el-container>
-      <!-- <TheHeader /> -->
-      <el-header ref="headerRef"><TheHeader /></el-header>
-      <el-container>
-        <el-aside width="200px"><TheAside /></el-aside>
-        <el-main
-          ><div class="container"><RouterView /></div
-        ></el-main>
-      </el-container>
-    </el-container>
-  </div>
+  <header ref="navRef" class="header"><TheHeader /></header>
+  <aside class="aside"><TheAside /></aside>
+  <main class="main">
+    <RouterView />
+  </main>
 </template>
 
 <script setup lang="ts">
@@ -19,47 +12,37 @@ import TheAside from './aside/TheAside.vue'
 import { RouterView } from 'vue-router'
 import { ref, onMounted, provide } from 'vue'
 
-const headerRef = ref<InstanceType<typeof TheHeader> | null>(null)
+const navRef = ref<HTMLElement | null>(null)
 const navHeight = ref(0)
 provide('navHeight', navHeight)
 onMounted(() => {
-  if (headerRef.value) {
-    navHeight.value = headerRef.value.$el.offsetHeight
+  if (navRef.value) {
+    navHeight.value = navRef.value.offsetHeight
   }
 })
 </script>
 
-<style scoped>
+<style lang="scss" scoped>
 .header {
-  width: 100%;
-  height: 50px;
+  height: $nav-height;
   position: fixed;
   top: 0;
+  left: 0;
+  right: 0;
   z-index: 9999;
-}
-.content {
-  display: flex;
-  position: relative;
-  top: 50px;
 }
 .aside {
   width: 200px;
-  height: 100vh;
   position: fixed;
-  top: 50px;
+  top: $nav-height;
   bottom: 0;
   overflow-y: auto;
   overflow-x: hidden;
 }
 .main {
-  flex: 1;
   margin-left: 200px;
-}
-.container {
-  /* margin: 0 auto; */
-}
-
-.common-layout {
-  overflow: hidden;
+  margin-top: $nav-height;
+  height: calc(100% - $nav-height);
+  overflow-y: auto;
 }
 </style>

@@ -1,10 +1,10 @@
 <template>
   <page-container>
-    <!-- <template #header> -->
-    <page-header></page-header>
-    <!-- </template> -->
+    <template #header>
+      <page-header></page-header>
+    </template>
     <group>
-      <!-- <template #title><h1 class="title">index page</h1></template> -->
+      <template #title><h1 class="title">index page</h1></template>
       <div>
         <h2>yes</h2>
       </div>

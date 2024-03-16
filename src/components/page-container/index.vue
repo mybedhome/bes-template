@@ -29,8 +29,9 @@ const contentHeight = computed(() => {
 .page-container {
 }
 .page-header {
-  background-color: transparent;
+  padding: 0 20px;
   line-height: 1;
+  background-color: transparent;
 }
 .page-content {
   overflow-y: auto;

@@ -30,6 +30,7 @@ onMounted(() => {
   left: 0;
   right: 0;
   z-index: 9999;
+  box-shadow: 0 4px 4px 0 rgba(0, 0, 0, 0.04);
 }
 .aside {
   width: 200px;
@@ -38,6 +39,7 @@ onMounted(() => {
   bottom: 0;
   overflow-y: auto;
   overflow-x: hidden;
+  box-shadow: 2px 0 6px 0 rgba(0, 0, 0, 0.04);
 }
 .main {
   margin-left: 200px;

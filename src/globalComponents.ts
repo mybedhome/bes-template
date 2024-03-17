@@ -8,6 +8,7 @@ export default (app: App<Element>): void => {
     if (paths.length > 3 || (paths[2] && paths[2] !== 'index.vue')) return
 
     const componentConfig = requireComponent(path)
+
     let fileName = path
     // components子目录下的index.vue组件名取父级目录名称
     if (path.endsWith('/index.vue')) {
@@ -30,6 +31,8 @@ export default (app: App<Element>): void => {
       })
       .join('')
 
+    // 设置在DevTools显示的组件名称
+    componentConfig.default.__name = componentName
     app.component(componentName, componentConfig.default || componentConfig)
   })
 }

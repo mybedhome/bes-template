@@ -1,0 +1,105 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <script src="https://unpkg.com/vue@2/dist/vue.js"></script>
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+      .tabs-wrapper {
+        overflow: hidden;
+        width: 100%; /* Adjust as needed */
+      }
+
+      .tabs-container {
+        display: flex;
+        white-space: nowrap;
+      }
+
+      .tab {
+        padding: 10px 15px;
+        cursor: pointer;
+        user-select: none;
+      }
+
+      .tab.active {
+        color: #007bff; /* Active tab color */
+      }
+    </style>
+  </head>
+  <body>
+    <div id="app">
+      <div class="tabs-wrapper" ref="wrapper">
+        <div class="tabs-container" ref="container" :style="containerStyle">
+          <div
+            v-for="(tab, index) in tabs"
+            :key="index"
+            class="tab"
+            :class="{'active': index === activeIndex}"
+            @click="onTabClick(index)"
+          >
+            {{ tab.label }}
+          </div>
+        </div>
+      </div>
+    </div>
+  </body>
+  <script>
+    new Vue({
+      el: '#app',
+      data() {
+        return {
+          tabs: [
+            { label: '媒体管理' },
+            { label: '事件管理' },
+            { label: '问题关联' },
+            { label: '服务请求管理' },
+            { label: '测试' }
+          ],
+          activeIndex: 0,
+          translateX: 0
+        }
+      },
+      computed: {
+        containerStyle() {
+          return {
+            transform: `translateX(${this.translateX}px)`,
+            transition: 'transform 0.3s ease-out'
+          }
+        }
+      },
+      methods: {
+        onTabClick(index) {
+          this.activeIndex = index
+          this.adjustTabPosition()
+        },
+        adjustTabPosition() {
+          const wrapperWidth = this.$refs.wrapper.offsetWidth
+          const container = this.$refs.container
+          console.log('container.children[', container.children)
+          const activeTab = container.children[this.activeIndex]
+          const scrollOffset =
+            activeTab.offsetLeft + activeTab.offsetWidth / 2 - wrapperWidth / 2
+
+          // Adjust translateX to center the active tab, but do not overflow the container bounds
+          const maxTranslateX = 0
+          const minTranslateX = wrapperWidth - container.offsetWidth
+          this.translateX = -Math.min(
+            Math.max(scrollOffset, minTranslateX),
+            maxTranslateX
+          )
+        }
+      },
+      mounted() {
+        this.$nextTick(() => {
+          this.adjustTabPosition()
+        })
+      }
+    })
+  </script>
+</html>

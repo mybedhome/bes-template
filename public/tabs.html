@@ -1,0 +1,108 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <script src="https://unpkg.com/vue@2/dist/vue.js"></script>
+  </head>
+  <body>
+    <div id="app">
+      <div class="tabs-wrap">
+        <div class="tabs-container" ref="tabsContainer" :style="containerStyle">
+          <div
+            class="tab"
+            v-for="(tab, index) in tabs"
+            :key="index"
+            @click="centerTab(index)"
+          >
+            {{ tab.label }}
+          </div>
+        </div>
+      </div>
+    </div>
+  </body>
+</html>
+
+<script>
+  new Vue({
+    el: '#app',
+    data() {
+      return {
+        tabs: [
+          { label: '媒体管理' },
+          { label: '事件管理' },
+          { label: '问题关联' },
+          { label: '服务请求管理' },
+          { label: '测试' }
+        ]
+      }
+    },
+    computed: {
+      containerStyle() {
+        return {
+          transform: `translateX(${this.translateX}px)`,
+          transition: 'transform 0.5s ease'
+        }
+      }
+    },
+    methods: {
+      // centerTab(index) {
+      //   const tabsContainer = this.$refs.tabsContainer
+      //   const selectedTab = tabsContainer.children[index]
+
+      //   // 计算被点击的Tab项的中心位置
+      //   const selectedTabCenter =
+      //     selectedTab.offsetLeft + selectedTab.offsetWidth / 2
+      //   // 计算容器的中心位置
+      //   const containerCenter = tabsContainer.offsetWidth / 2
+      //   // 计算新的滚动位置，使被点击的Tab项尽可能居中显示
+      //   const newScrollLeft = selectedTabCenter - containerCenter
+
+      //   // 更新容器的滚动位置
+      //   tabsContainer.scrollLeft = newScrollLeft
+      // }
+      centerTab(index) {
+        const tabsContainer = this.$refs.tabsContainer
+        const selectedTab = tabsContainer.children[index]
+
+        // 计算被点击的Tab项的中心位置
+        const selectedTabCenter =
+          selectedTab.offsetLeft + selectedTab.offsetWidth / 2
+        // 计算容器的中心位置
+        const containerCenter =
+          tabsContainer.scrollLeft + tabsContainer.offsetWidth / 2
+        // 计算新的滚动位置，使被点击的Tab项尽可能居中显示
+        const newScrollLeft =
+          selectedTabCenter - containerCenter + tabsContainer.scrollLeft
+
+        // 更新容器的滚动位置
+        tabsContainer.scrollLeft = newScrollLeft
+      }
+    }
+  })
+</script>
+
+<style>
+  * {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+  }
+  .tabs-wrap {
+    overflow: hidden;
+  }
+  .tabs-container {
+    will-change: transform;
+    display: flex;
+    overflow-x: auto;
+    white-space: nowrap;
+    scroll-behavior: smooth;
+  }
+
+  .tab {
+    padding: 10px;
+    cursor: pointer;
+    user-select: none;
+  }
+</style>

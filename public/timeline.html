@@ -1,0 +1,98 @@
+<!doctype html>
+<html lang="zh">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>左边时间轴效果</title>
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        margin: 0;
+        padding: 20px;
+        background: #f0f0f0;
+      }
+      .timeline {
+        position: relative;
+        padding-left: 20px;
+        list-style: none;
+      }
+      /* .timeline::before {
+        content: '';
+        position: absolute;
+        left: 0;
+        top: 0;
+        bottom: 0;
+        width: 2px;
+        background: #4a90e2;
+      } */
+      .timeline-item {
+        margin-bottom: 20px;
+        position: relative;
+      }
+      .timeline-item:last-child {
+        margin-bottom: 0;
+      }
+      .timeline-marker {
+        position: absolute;
+        left: -6px; /* Adjust based on marker size */
+        top: 0;
+        width: 12px; /* Marker size */
+        height: 12px; /* Marker size */
+        border-radius: 50%;
+        background: #5479f5;
+        border: 2px solid #ffffff;
+      }
+      .timeline-item::before {
+        content: '';
+        position: absolute;
+        left: 0;
+        top: 0;
+        bottom: 0;
+        width: 2px;
+        height: calc(100% + 20px);
+        background: #5479f5;
+      }
+      .timeline-content {
+        padding-left: 20px;
+      }
+      .timeline-title {
+        margin: 0 0 5px 0;
+        font-weight: bold;
+      }
+      .timeline-time {
+        margin: 0;
+        font-size: 0.85em;
+        color: #666;
+      }
+    </style>
+  </head>
+  <body>
+    <ul class="timeline">
+      <li class="timeline-item">
+        <div class="timeline-marker"></div>
+        <div class="timeline-content">
+          <h3 class="timeline-title">事件标题</h3>
+          <p class="timeline-time">2024年2月24日</p>
+          <p>事件详情描述。</p>
+        </div>
+      </li>
+      <li class="timeline-item">
+        <div class="timeline-marker"></div>
+        <div class="timeline-content">
+          <h3 class="timeline-title">事件标题</h3>
+          <p class="timeline-time">2024年2月24日</p>
+          <p>事件详情描述。</p>
+        </div>
+      </li>
+      <li class="timeline-item">
+        <div class="timeline-marker"></div>
+        <div class="timeline-content">
+          <h3 class="timeline-title">事件标题</h3>
+          <p class="timeline-time">2024年2月24日</p>
+          <p>事件详情描述。</p>
+        </div>
+      </li>
+      <!-- 其他时间轴项 -->
+    </ul>
+  </body>
+</html>

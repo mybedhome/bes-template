@@ -27,7 +27,7 @@ const contentHeight = computed(() => {
 
 <style scoped>
 .page-container {
-  background-color: #edf0f4;
+  background-color: #f0f2f7;
 }
 .page-header {
   padding: 0 20px;

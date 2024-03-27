@@ -13,10 +13,10 @@ import logo from '@/assets/header-logo.svg'
   display: flex;
   align-items: center;
   height: 100%;
-  // padding-left: 15px;
   .logo {
     max-width: 240px;
     min-width: 200px;
+    transform: translateX(20px);
   }
 }
 </style>
